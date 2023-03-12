@@ -35,6 +35,46 @@ public class KodePos
     }
 }
 
+public enum DoorState
+{
+    Terkunci,
+    Terbuka
+}
+
+public class DoorMachine
+{
+    private readonly Action[] _stateActions;
+    public DoorState currentState { get; private set; }
+
+    public DoorMachine()
+    {
+        _stateActions = new Action[] { TerkunciAction, TerbukaAction };
+        currentState = DoorState.Terkunci;
+        _stateActions[(int)currentState]();
+    }
+
+    public void Lock()
+    {
+        currentState = DoorState.Terkunci;
+        _stateActions[(int)currentState]();
+    }
+
+    public void Unlock()
+    {
+        currentState = DoorState.Terbuka;
+        _stateActions[(int)currentState]();
+    }
+
+    private void TerkunciAction()
+    {
+        Console.WriteLine("Pintu terkunci");
+    }
+
+    private void TerbukaAction()
+    {
+        Console.WriteLine("Pintu tidak terkunci");
+    }
+}
 
 
 public class Program
@@ -56,6 +96,11 @@ public class Program
         Console.WriteLine("Kode pos Samoja : " + KodePos.getKodePos("Samoja"));
 
         Console.WriteLine();
+
+        DoorMachine doorMachine = new DoorMachine();
+        doorMachine.Lock();
+        doorMachine.Unlock();
+        doorMachine.Lock();
 
     }
 }
